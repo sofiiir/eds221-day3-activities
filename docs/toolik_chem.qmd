@@ -1,0 +1,30 @@
+---
+title: "tolik_chem"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+ 
+#read in csv, change out "." for NA and then clean names to lower_snake 
+toolik_biochem <- read.csv(here::here("data", "2011_Kling_Akchem.csv"), na = c(".","NA"))|>clean_names()
+
+#filter down to pH, DOC, and TDN
+inlet_biochem <- toolik_biochem |> dplyr::filter(site == "Toolik Inlet") |>  dplyr::select( p_h, doc_u_m, tdn_u_m) 
+```
+
+```{r}
+for (i in inlet_biochem$p_h){
+  p_h_mean <- sum(inlet_biochem$p_h[i])/i
+  print(p_h_mean)
+}
+
+for (i in inlet_biochem$doc_u_m){
+  doc_u_m_mean <- (sum(inlet_biochem$doc_u_m[i])/i, na.rm = TRUE)
+  print(doc_u_m_mean)
+}
+
+```
+
